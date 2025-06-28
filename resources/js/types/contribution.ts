@@ -13,7 +13,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    category_id: number;
+    category_id?: number;
     category?: Category;
     created_at: string;
     updated_at: string;

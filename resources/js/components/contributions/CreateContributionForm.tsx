@@ -11,12 +11,12 @@ import { formatCurrency } from '@/lib/utils';
 import { CalendarIcon, DollarSign } from 'lucide-react';
 
 interface CreateContributionFormProps {
-    users: User[];
-    categories: Category[];
+    users?: User[];
+    categories?: Category[];
     onSuccess?: () => void;
 }
 
-export function CreateContributionForm({ users, categories, onSuccess }: CreateContributionFormProps) {
+export function CreateContributionForm({ users = [], categories = [], onSuccess }: CreateContributionFormProps) {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -40,7 +40,7 @@ export function CreateContributionForm({ users, categories, onSuccess }: CreateC
 
     const handleUserChange = (userId: string) => {
         setData('user_id', userId);
-        const user = users.find(u => u.id.toString() === userId);
+        const user = Array.isArray(users) ? users.find(u => u.id.toString() === userId) : null;
         setSelectedUser(user || null);
     };
 
@@ -48,6 +48,26 @@ export function CreateContributionForm({ users, categories, onSuccess }: CreateC
         const now = new Date();
         return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     };
+
+    // Show loading state if data is not available
+    if (!Array.isArray(users) || users.length === 0) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <DollarSign className="h-5 w-5" />
+                        Record New Contribution
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="text-center py-8 text-muted-foreground">
+                        <p>Loading form data...</p>
+                        <p className="text-sm mt-2">Please wait while we load the member information.</p>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card>
@@ -71,16 +91,22 @@ export function CreateContributionForm({ users, categories, onSuccess }: CreateC
                                     <SelectValue placeholder="Select a member" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {users.map((user) => (
-                                        <SelectItem key={user.id} value={user.id.toString()}>
-                                            <div className="flex items-center justify-between w-full">
-                                                <span>{user.name}</span>
-                                                <span className="text-sm text-muted-foreground ml-2">
-                                                    ({user.category?.name})
-                                                </span>
-                                            </div>
+                                    {Array.isArray(users) && users.length > 0 ? (
+                                        users.map((user) => (
+                                            <SelectItem key={user.id} value={user.id.toString()}>
+                                                <div className="flex items-center justify-between w-full">
+                                                    <span>{user.name}</span>
+                                                    <span className="text-sm text-muted-foreground ml-2">
+                                                        ({user.category?.name})
+                                                    </span>
+                                                </div>
+                                            </SelectItem>
+                                        ))
+                                    ) : (
+                                        <SelectItem value="" disabled>
+                                            No users available
                                         </SelectItem>
-                                    ))}
+                                    )}
                                 </SelectContent>
                             </Select>
                             {errors.user_id && (

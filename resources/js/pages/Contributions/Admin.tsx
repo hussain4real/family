@@ -14,11 +14,15 @@ import { Plus, Users, DollarSign, AlertTriangle } from 'lucide-react';
 interface AdminProps extends PageProps {
     summary: ContributionSummary;
     recentContributions?: Contribution[];
-    users?: User[];
+    users?: User[] | { data: User[] };
     categories?: Category[];
 }
 
 export default function Admin({ auth, summary, recentContributions, users, categories }: AdminProps) {
+    // Extract the actual users array from the ResourceCollection
+    const usersData: User[] = Array.isArray(users) ? users : (users as any)?.data || [];
+    const categoriesData = categories || [];
+
     return (
         <AppLayout>
             <Head title="Financial Administration" />
@@ -96,10 +100,10 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                         </TabsContent>
 
                         <TabsContent value="record">
-                            {users && categories ? (
+                            {Array.isArray(usersData) && usersData.length > 0 && Array.isArray(categoriesData) && categoriesData.length > 0 ? (
                                 <CreateContributionForm
-                                    users={users}
-                                    categories={categories}
+                                    users={usersData}
+                                    categories={categoriesData}
                                     onSuccess={() => {
                                         // Optionally refresh data or show success message
                                     }}
@@ -107,6 +111,7 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                             ) : (
                                 <div className="text-center py-8 text-muted-foreground">
                                     <p>Loading form data...</p>
+                                    <p className="text-sm mt-2">Please wait while we load the member information.</p>
                                 </div>
                             )}
                         </TabsContent>
@@ -142,7 +147,7 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                                 </CardHeader>
                                 <CardContent>
                                     <div className="grid gap-4">
-                                        {users && users.length > 0 ? users.map((user) => (
+                                        {usersData && usersData.length > 0 ? usersData.map((user) => (
                                             <div
                                                 key={user.id}
                                                 className="flex items-center justify-between p-4 border rounded-lg"
@@ -150,7 +155,7 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                                                 <div className="flex items-center gap-3">
                                                     <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                                                         <span className="text-sm font-medium">
-                                                            {user.name.split(' ').map(n => n[0]).join('')}
+                                                            {user.name.split(' ').map((n) => n[0]).join('')}
                                                         </span>
                                                     </div>
                                                     <div>
