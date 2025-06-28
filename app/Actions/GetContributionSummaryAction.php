@@ -10,6 +10,10 @@ use Illuminate\Support\Collection;
 
 class GetContributionSummaryAction
 {
+    public function __construct(
+        private CalculateUserBalanceAction $calculateBalance
+    ) {}
+
     public function execute(?Carbon $startDate = null, ?Carbon $endDate = null): array
     {
         $startDate = $startDate ?? now()->startOfMonth();
@@ -35,10 +39,12 @@ class GetContributionSummaryAction
 
     private function getTotalOutstanding(): float
     {
-        return User::with('category', 'contributions')
+        return User::with('category')
+            ->whereHas('category')
             ->get()
             ->sum(function ($user) {
-                return $user->outstanding_balance ?? 0;
+                $balance = $this->calculateBalance->execute($user);
+                return $balance['outstanding_balance'];
             });
     }
 
@@ -51,7 +57,10 @@ class GetContributionSummaryAction
                 return $user->contributions->sum('amount');
             });
 
-            $totalOutstanding = $category->users->sum('outstanding_balance');
+            $totalOutstanding = $category->users->sum(function ($user) {
+                $balance = $this->calculateBalance->execute($user);
+                return $balance['outstanding_balance'];
+            });
 
             return [
                 'category' => $category->name,

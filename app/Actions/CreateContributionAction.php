@@ -20,7 +20,7 @@ class CreateContributionAction
                 'amount' => $data['amount'],
                 'date' => Carbon::parse($data['date']),
                 'recorded_by_id' => $data['recorded_by_id'],
-                'description' => $data['description'] ?? null,
+                'notes' => $data['description'] ?? null,
             ]);
         });
     }
@@ -35,7 +35,13 @@ class CreateContributionAction
             throw ValidationException::withMessages(['amount' => 'Amount must be greater than zero.']);
         }
 
-        if (!isset($data['date']) || !Carbon::parse($data['date'])->isValid()) {
+        if (!isset($data['date'])) {
+            throw ValidationException::withMessages(['date' => 'Date is required.']);
+        }
+
+        try {
+            Carbon::parse($data['date']);
+        } catch (\Exception $e) {
             throw ValidationException::withMessages(['date' => 'Invalid date provided.']);
         }
 
