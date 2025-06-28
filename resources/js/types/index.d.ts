@@ -20,6 +20,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    canAccess?: boolean; // Optional property to control visibility based on permissions
 }
 
 export interface SharedData {
