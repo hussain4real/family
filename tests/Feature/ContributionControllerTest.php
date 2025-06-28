@@ -44,7 +44,7 @@ class ContributionControllerTest extends TestCase
             'name' => 'Married',
             'slug' => 'married',
             'monthly_fee' => 50.00,
-            'description' => 'Married members',
+            'notes' => 'Married members',
             'is_active' => true,
         ]);
 
@@ -114,7 +114,7 @@ class ContributionControllerTest extends TestCase
             'user_id' => $this->contributor->id,
             'amount' => 50.00,
             'date' => now()->format('Y-m-d'),
-            'description' => 'Monthly contribution',
+            'notes' => 'Monthly contribution',
         ];
 
         $response = $this->actingAs($this->financialSecretary)

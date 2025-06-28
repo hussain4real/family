@@ -28,7 +28,7 @@ class CalculateUserBalanceActionTest extends TestCase
             'name' => 'Test Category',
             'slug' => 'test',
             'monthly_fee' => 50.00,
-            'description' => 'Test category',
+            'notes' => 'Test category',
             'is_active' => true,
         ]);
 

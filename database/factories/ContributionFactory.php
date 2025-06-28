@@ -21,7 +21,7 @@ class ContributionFactory extends Factory
             'amount' => $this->faker->randomFloat(2, 10, 100),
             'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'recorded_by_id' => User::factory(),
-            'description' => $this->faker->optional(0.7)->sentence(),
+            'notes' => $this->faker->optional(0.7)->sentence(),
         ];
     }
 
@@ -35,13 +35,13 @@ class ContributionFactory extends Factory
         return $this->state(['date' => $date]);
     }
 
-    public function withDescription(string $description): self
+    public function withNotes(string $notes): self
     {
-        return $this->state(['description' => $description]);
+        return $this->state(['notes' => $notes]);
     }
 
-    public function withoutDescription(): self
+    public function withoutNotes(): self
     {
-        return $this->state(['description' => null]);
+        return $this->state(['notes' => null]);
     }
 }

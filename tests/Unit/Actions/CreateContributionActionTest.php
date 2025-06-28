@@ -28,7 +28,7 @@ class CreateContributionActionTest extends TestCase
             'name' => 'Test Category',
             'slug' => 'test',
             'monthly_fee' => 25.00,
-            'description' => 'Test category',
+            'notes' => 'Test category',
             'is_active' => true,
         ]);
 
@@ -43,7 +43,7 @@ class CreateContributionActionTest extends TestCase
             'amount' => 50.00,
             'date' => '2024-01-15',
             'recorded_by_id' => $this->recorder->id,
-            'description' => 'Test contribution',
+            'notes' => 'Test contribution',
         ];
 
         $contribution = $this->action->execute($data);
