@@ -12,7 +12,7 @@ interface CreateProps extends PageProps {
     categories: Category[];
 }
 
-export default function Create({ auth, users, categories }: CreateProps) {
+export default function Create({ users, categories }: CreateProps) {
     return (
         <AppLayout>
             <Head title="Record New Contribution" />

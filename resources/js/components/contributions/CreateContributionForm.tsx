@@ -17,7 +17,7 @@ interface CreateContributionFormProps {
     onSuccess?: () => void;
 }
 
-export function CreateContributionForm({ users = [], categories = [], onSuccess }: CreateContributionFormProps) {
+export function CreateContributionForm({ users = [], onSuccess }: CreateContributionFormProps) {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const getCurrentMonth = () => {

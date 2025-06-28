@@ -18,7 +18,7 @@ export function ContributionList({
     contributions,
     showActions = false,
     showRecorder = false,
-    onDelete
+    // onDelete
 }: ContributionListProps) {
     const handleDelete = (contributionId: number) => {
         if (confirm('Are you sure you want to delete this contribution?')) {
