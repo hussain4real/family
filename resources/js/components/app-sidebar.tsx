@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Banknote, BookOpen, Currency, CurrencyIcon, Folder, HandCoins, LayoutGrid } from 'lucide-react';
+import { Banknote, BookOpen, Folder, HandCoins, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 import { canAccessAdmin } from '@/lib/permissions';
 
