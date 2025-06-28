@@ -13,9 +13,9 @@ import { Plus, Users, DollarSign, AlertTriangle } from 'lucide-react';
 
 interface AdminProps extends PageProps {
     summary: ContributionSummary;
-    recentContributions: Contribution[];
-    users: User[];
-    categories: Category[];
+    recentContributions?: Contribution[];
+    users?: User[];
+    categories?: Category[];
 }
 
 export default function Admin({ auth, summary, recentContributions, users, categories }: AdminProps) {
@@ -96,13 +96,19 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                         </TabsContent>
 
                         <TabsContent value="record">
-                            <CreateContributionForm
-                                users={users}
-                                categories={categories}
-                                onSuccess={() => {
-                                    // Optionally refresh data or show success message
-                                }}
-                            />
+                            {users && categories ? (
+                                <CreateContributionForm
+                                    users={users}
+                                    categories={categories}
+                                    onSuccess={() => {
+                                        // Optionally refresh data or show success message
+                                    }}
+                                />
+                            ) : (
+                                <div className="text-center py-8 text-muted-foreground">
+                                    <p>Loading form data...</p>
+                                </div>
+                            )}
                         </TabsContent>
 
                         <TabsContent value="recent">
@@ -111,7 +117,7 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                                     <CardTitle>Recent Activity</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    {recentContributions.length > 0 ? (
+                                    {recentContributions && recentContributions.length > 0 ? (
                                         <ContributionList
                                             contributions={recentContributions}
                                             showRecorder={true}
@@ -136,7 +142,7 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                                 </CardHeader>
                                 <CardContent>
                                     <div className="grid gap-4">
-                                        {users.map((user) => (
+                                        {users && users.length > 0 ? users.map((user) => (
                                             <div
                                                 key={user.id}
                                                 className="flex items-center justify-between p-4 border rounded-lg"
@@ -163,7 +169,11 @@ export default function Admin({ auth, summary, recentContributions, users, categ
                                                     )}
                                                 </div>
                                             </div>
-                                        ))}
+                                        )) : (
+                                            <div className="text-center py-8 text-muted-foreground">
+                                                <p>No members found</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </CardContent>
                             </Card>

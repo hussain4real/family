@@ -8,6 +8,7 @@ use App\Actions\GetContributionSummaryAction;
 use App\Http\Requests\StoreContributionRequest;
 use App\Http\Resources\ContributionResource;
 use App\Http\Resources\UserResource;
+use App\Models\Category;
 use App\Models\Contribution;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -64,9 +65,29 @@ class ContributionController extends Controller
 
         $summary = $this->getSummary->execute();
 
+        // Get recent contributions (last 10)
+        $recentContributions = Contribution::with(['user.category', 'recordedBy'])
+            ->latest('date')
+            ->limit(10)
+            ->get();
+
+        // Get all users with categories for the create form
+        $users = User::with('category')
+            ->whereHas('category')
+            ->orderBy('name')
+            ->get();
+
+        // Get all categories
+        $categories = \App\Models\Category::where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
         return Inertia::render('Contributions/Admin', [
             'contributions' => ContributionResource::collection($contributions),
             'summary' => $summary,
+            'recentContributions' => ContributionResource::collection($recentContributions),
+            'users' => UserResource::collection($users),
+            'categories' => $categories,
             'filters' => $request->only(['category_id', 'user_id']),
         ]);
     }
@@ -80,8 +101,13 @@ class ContributionController extends Controller
             ->orderBy('name')
             ->get();
 
+        $categories = Category::where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
         return Inertia::render('Contributions/Create', [
             'users' => UserResource::collection($users),
+            'categories' => $categories,
         ]);
     }
 
