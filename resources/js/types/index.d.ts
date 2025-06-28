@@ -31,12 +31,28 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
+export interface PageProps {
+    auth: Auth;
+    [key: string]: unknown;
+}
+
 export interface User {
     id: number;
     name: string;
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    category_id?: number;
+    category?: {
+        id: number;
+        name: string;
+        slug: string;
+        monthly_fee: number;
+        description?: string;
+        is_active: boolean;
+        created_at: string;
+        updated_at: string;
+    };
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...

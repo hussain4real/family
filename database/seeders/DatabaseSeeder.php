@@ -13,11 +13,44 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            RolePermissionSeeder::class,
+            CategorySeeder::class,
         ]);
+
+        // Create categories first, then users
+        $marriedCategory = \App\Models\Category::where('slug', 'married')->first();
+        $singleCategory = \App\Models\Category::where('slug', 'single')->first();
+        $studentCategory = \App\Models\Category::where('slug', 'student')->first();
+
+        // Create test financial secretary
+        $financialSecretary = User::factory()->create([
+            'name' => 'Financial Secretary',
+            'email' => 'secretary@family.com',
+            'category_id' => $marriedCategory->id,
+        ]);
+        $financialSecretary->assignRole('financial-secretary');
+
+        // Create test contributors
+        $contributor1 = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@family.com',
+            'category_id' => $marriedCategory->id,
+        ]);
+        $contributor1->assignRole('contributor');
+
+        $contributor2 = User::factory()->create([
+            'name' => 'Jane Smith',
+            'email' => 'jane@family.com',
+            'category_id' => $singleCategory->id,
+        ]);
+        $contributor2->assignRole('contributor');
+
+        $contributor3 = User::factory()->create([
+            'name' => 'Bob Student',
+            'email' => 'bob@family.com',
+            'category_id' => $studentCategory->id,
+        ]);
+        $contributor3->assignRole('contributor');
     }
 }

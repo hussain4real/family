@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'category_id',
     ];
 
     /**
@@ -44,5 +48,38 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function contributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class);
+    }
+
+    public function recordedContributions(): HasMany
+    {
+        return $this->hasMany(Contribution::class, 'recorded_by_id');
+    }
+
+    public function getMonthlyFeeAttribute(): ?float
+    {
+        return $this->category?->monthly_fee;
+    }
+
+    public function getOutstandingBalanceAttribute(): float
+    {
+        if (!$this->category) {
+            return 0;
+        }
+
+        $monthsSinceStart = now()->diffInMonths($this->created_at) + 1;
+        $totalExpected = $monthsSinceStart * $this->category->monthly_fee;
+        $totalPaid = $this->contributions->sum('amount');
+
+        return max(0, $totalExpected - $totalPaid);
     }
 }
