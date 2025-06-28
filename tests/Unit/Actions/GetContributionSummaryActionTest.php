@@ -33,7 +33,7 @@ class GetContributionSummaryActionTest extends TestCase
             'name' => 'Married',
             'slug' => 'married',
             'monthly_fee' => 50.00,
-            'description' => 'Married members',
+            'notes' => 'Married members',
             'is_active' => true,
         ]);
 
@@ -41,7 +41,7 @@ class GetContributionSummaryActionTest extends TestCase
             'name' => 'Single',
             'slug' => 'single',
             'monthly_fee' => 30.00,
-            'description' => 'Single members',
+            'notes' => 'Single members',
             'is_active' => true,
         ]);
 
