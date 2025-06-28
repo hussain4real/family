@@ -67,7 +67,7 @@ export function AppSidebar() {
 
         // Show admin menu only to users with admin access
         if (item.href === '/admin/contributions') {
-            return canAccessAdmin(auth.user);
+            return canAccessAdmin(auth);
         }
 
         // Show contributions to all authenticated users
