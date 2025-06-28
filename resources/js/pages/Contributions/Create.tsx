@@ -7,12 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 
+interface ResourceCollection<T> {
+    data: T[];
+}
 interface CreateProps extends PageProps {
-    users: User[];
-    categories: Category[];
+    users: User[] | ResourceCollection<User>;
+    categories: Category[] | ResourceCollection<Category>;
 }
 
-export default function Create({ auth, users, categories }: CreateProps) {
+export default function Create({ users, categories }: CreateProps) {
+
+    // Extract the actual users array from the ResourceCollection
+    const usersData: User[] = Array.isArray(users) ? users : (users as ResourceCollection<User>)?.data || [];
+    const categoriesData: Category[] = Array.isArray(categories) ? categories : (categories as ResourceCollection<Category>)?.data || [];
+
     return (
         <AppLayout>
             <Head title="Record New Contribution" />
@@ -40,8 +48,8 @@ export default function Create({ auth, users, categories }: CreateProps) {
                             </div>
 
                             <CreateContributionForm
-                                users={users}
-                                categories={categories}
+                                users={usersData}
+                                categories={categoriesData}
                                 onSuccess={() => {
                                     // The form component handles redirect on success
                                 }}

@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { User, UserBalance, Contribution } from '@/types/contribution';
+import { UserBalance, Contribution } from '@/types/contribution';
 import AppLayout from '@/layouts/app-layout';
 import { BalanceCard } from '@/components/contributions/BalanceCard';
 import { ContributionList } from '@/components/contributions/ContributionList';

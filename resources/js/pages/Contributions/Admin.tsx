@@ -9,18 +9,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from '@inertiajs/react';
-import { Plus, Users, DollarSign, AlertTriangle } from 'lucide-react';
+import { Plus, Users, DollarSign } from 'lucide-react';
+
+interface ResourceCollection<T> {
+    data: T[];
+}
 
 interface AdminProps extends PageProps {
     summary: ContributionSummary;
     recentContributions?: Contribution[];
-    users?: User[] | { data: User[] };
+    users?: User[] | ResourceCollection<User>;
     categories?: Category[];
 }
 
-export default function Admin({ auth, summary, recentContributions, users, categories }: AdminProps) {
+export default function Admin({ summary, recentContributions, users, categories }: AdminProps) {
     // Extract the actual users array from the ResourceCollection
-    const usersData: User[] = Array.isArray(users) ? users : (users as any)?.data || [];
+    const usersData: User[] = Array.isArray(users) ? users : (users as ResourceCollection<User>)?.data || [];
     const categoriesData = categories || [];
 
     return (

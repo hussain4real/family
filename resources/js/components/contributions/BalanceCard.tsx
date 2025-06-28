@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserBalance, User } from '@/types/contribution';
-import { formatCurrency, formatDate } from '@/lib/utils';
-import { DollarSign, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
+// import { DollarSign, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 
 interface BalanceCardProps {
     balance: UserBalance;

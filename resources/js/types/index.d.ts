@@ -2,7 +2,9 @@ import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
-    user: User;
+    user: User | null;
+    roles: string[];
+    permissions: string[];
 }
 
 export interface BreadcrumbItem {
@@ -20,6 +22,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    canAccess?: boolean; // Optional property to control visibility based on permissions
 }
 
 export interface SharedData {
@@ -53,6 +56,8 @@ export interface User {
         created_at: string;
         updated_at: string;
     };
+    roles?: string[];
+    permissions?: string[];
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
