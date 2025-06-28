@@ -2,7 +2,7 @@ import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
-    user: User;
+    user: User | null;
 }
 
 export interface BreadcrumbItem {
@@ -54,6 +54,8 @@ export interface User {
         created_at: string;
         updated_at: string;
     };
+    roles?: string[];
+    permissions?: string[];
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...

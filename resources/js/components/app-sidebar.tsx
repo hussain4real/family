@@ -6,7 +6,12 @@ import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Banknote, BookOpen, Currency, CurrencyIcon, Folder, HandCoins, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+import { canAccessAdmin } from '@/lib/permissions';
 
+/**
+ * Main navigation items configuration
+ * Items are filtered based on user permissions in the AppSidebar component
+ */
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -17,6 +22,7 @@ const mainNavItems: NavItem[] = [
         title: 'Admin',
         href: '/admin/contributions',
         icon: HandCoins,
+        // This item is filtered by permission in AppSidebar component
     },
     {
         title: 'Contributions',
@@ -51,6 +57,28 @@ const footerNavItems: NavItem[] = [
 
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
+
+    // Filter navigation items based on user permissions
+    const filteredNavItems = mainNavItems.filter(item => {
+        // Show dashboard to all authenticated users
+        if (item.href === '/dashboard') {
+            return true;
+        }
+
+        // Show admin menu only to users with admin access
+        if (item.href === '/admin/contributions') {
+            return canAccessAdmin(auth.user);
+        }
+
+        // Show contributions to all authenticated users
+        if (item.href === '/contributions') {
+            return true;
+        }
+
+        // Default: show the item
+        return true;
+    });
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -66,7 +94,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={filteredNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
