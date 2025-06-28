@@ -6,9 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { MonthPicker } from '@/components/ui/month-picker';
 import { User, Category } from '@/types/contribution';
 import { formatCurrency } from '@/lib/utils';
-import { CalendarIcon, DollarSign } from 'lucide-react';
+import { DollarSign } from 'lucide-react';
 
 interface CreateContributionFormProps {
     users?: User[];
@@ -19,10 +20,15 @@ interface CreateContributionFormProps {
 export function CreateContributionForm({ users = [], categories = [], onSuccess }: CreateContributionFormProps) {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
+    const getCurrentMonth = () => {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: '',
         amount: '',
-        contribution_month: '',
+        contribution_month: getCurrentMonth(),
         notes: '',
     });
 
@@ -42,11 +48,6 @@ export function CreateContributionForm({ users = [], categories = [], onSuccess 
         setData('user_id', userId);
         const user = Array.isArray(users) ? users.find(u => u.id.toString() === userId) : null;
         setSelectedUser(user || null);
-    };
-
-    const getCurrentMonth = () => {
-        const now = new Date();
-        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     };
 
     // Show loading state if data is not available
@@ -116,13 +117,10 @@ export function CreateContributionForm({ users = [], categories = [], onSuccess 
 
                         <div className="space-y-2">
                             <Label htmlFor="contribution_month">Month</Label>
-                            <Input
-                                id="contribution_month"
-                                type="month"
+                            <MonthPicker
                                 value={data.contribution_month}
-                                onChange={(e) => setData('contribution_month', e.target.value)}
-                                defaultValue={getCurrentMonth()}
-                                required
+                                onChange={(value) => setData('contribution_month', value)}
+                                placeholder="Select contribution month"
                                 className="w-full"
                             />
                             {errors.contribution_month && (
