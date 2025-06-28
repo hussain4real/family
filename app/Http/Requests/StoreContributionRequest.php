@@ -18,7 +18,8 @@ class StoreContributionRequest extends FormRequest
             'user_id' => ['required', 'exists:users,id'],
             'amount' => ['required', 'numeric', 'min:0.01'],
             'date' => ['required', 'date', 'before_or_equal:today'],
-            'description' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'], // Keep for backward compatibility
         ];
     }
 

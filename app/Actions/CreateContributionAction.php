@@ -20,7 +20,7 @@ class CreateContributionAction
                 'amount' => $data['amount'],
                 'date' => Carbon::parse($data['date']),
                 'recorded_by_id' => $data['recorded_by_id'],
-                'notes' => $data['description'] ?? null,
+                'notes' => $data['notes'] ?? $data['description'] ?? null,
             ]);
         });
     }

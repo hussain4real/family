@@ -28,7 +28,7 @@ export function CreateContributionForm({ users = [], categories = [], onSuccess 
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: '',
         amount: '',
-        contribution_month: getCurrentMonth(),
+        date: getCurrentMonth() + '-01', // Convert yyyy-MM to yyyy-MM-01
         notes: '',
     });
 
@@ -116,15 +116,15 @@ export function CreateContributionForm({ users = [], categories = [], onSuccess 
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="contribution_month">Month</Label>
+                            <Label htmlFor="date">Month</Label>
                             <MonthPicker
-                                value={data.contribution_month}
-                                onChange={(value) => setData('contribution_month', value)}
+                                value={data.date.substring(0, 7)} // Extract yyyy-MM from yyyy-MM-01
+                                onChange={(value) => setData('date', value + '-01')} // Convert yyyy-MM to yyyy-MM-01
                                 placeholder="Select contribution month"
                                 className="w-full"
                             />
-                            {errors.contribution_month && (
-                                <p className="text-sm text-red-600">{errors.contribution_month}</p>
+                            {errors.date && (
+                                <p className="text-sm text-red-600">{errors.date}</p>
                             )}
                         </div>
                     </div>
