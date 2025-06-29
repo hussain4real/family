@@ -20,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('contributions.show');
 
     // Admin routes for financial secretary
-    Route::middleware(['role:financial-secretary'])->prefix('admin')->group(function () {
+    Route::middleware(['can:delete-contributions'])->prefix('admin')->group(function () {
         Route::get('/contributions', [ContributionController::class, 'adminIndex'])
             ->name('contributions.admin');
 

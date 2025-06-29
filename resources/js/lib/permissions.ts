@@ -1,4 +1,4 @@
-import { Auth, User } from '@/types';
+import { Auth } from '@/types';
 
 /**
  * Check if a user can view all contributions
