@@ -8,7 +8,7 @@ import { Plus, ArrowRight, Activity } from 'lucide-react';
 import { Contribution } from '@/types/contribution';
 
 interface RecentActivityProps {
-    contributions: Contribution[];
+    contributions: Contribution[] | any[];
     showCreateButton?: boolean;
     title?: string;
     emptyMessage?: string;
@@ -24,6 +24,9 @@ export function RecentActivity({
     viewAllRoute,
     isAdmin = false
 }: RecentActivityProps) {
+    // Ensure contributions is an array
+    const contributionsList = Array.isArray(contributions) ? contributions : [];
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0">
@@ -51,17 +54,17 @@ export function RecentActivity({
                 </div>
             </CardHeader>
             <CardContent>
-                {contributions.length > 0 ? (
+                {contributionsList.length > 0 ? (
                     <div className="space-y-3">
                         <ContributionList
-                            contributions={contributions}
+                            contributions={contributionsList}
                             showRecorder={isAdmin}
                             showActions={false}
                         />
-                        {contributions.length >= 5 && (
+                        {contributionsList.length >= 5 && (
                             <div className="pt-2 border-t text-center">
                                 <p className="text-sm text-muted-foreground">
-                                    Showing latest {contributions.length} contributions
+                                    Showing latest {contributionsList.length} contributions
                                 </p>
                             </div>
                         )}

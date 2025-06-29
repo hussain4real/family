@@ -37,8 +37,9 @@ export function BalanceOverview({ balance, category }: BalanceOverviewProps) {
 
     const getStatusText = () => {
         if (balance.is_up_to_date) return 'Up to date';
-        if (balance.months_behind <= 1) return `${balance.months_behind} month behind`;
-        return `${balance.months_behind} months behind`;
+        if (balance.months_behind === 1) return '1 month behind';
+        if (balance.months_behind > 1) return `${balance.months_behind} months behind`;
+        return 'Up to date'; // fallback for 0 or undefined months_behind
     };
 
     return (

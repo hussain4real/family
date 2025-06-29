@@ -38,7 +38,7 @@ class DashboardController extends Controller
         $data = [
             'user' => new UserResource($user->load('category')),
             'balance' => $userBalance,
-            'recentContributions' => ContributionResource::collection($recentContributions),
+            'recentContributions' => ContributionResource::collection($recentContributions)->resolve(),
             'category' => $category,
         ];
 
@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
             $data['adminData'] = [
                 'summary' => $summary,
-                'allRecentContributions' => ContributionResource::collection($allRecentContributions),
+                'allRecentContributions' => ContributionResource::collection($allRecentContributions)->resolve(),
                 'membersWithoutContribution' => UserResource::collection($membersWithoutContribution)->resolve(),
                 'currentMonth' => now()->format('F Y'),
             ];
