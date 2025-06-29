@@ -87,3 +87,4 @@ class ContributionPolicy
         return $user->hasPermissionTo('view-contribution-reports');
     }
 }
+

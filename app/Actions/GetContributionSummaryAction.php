@@ -19,9 +19,17 @@ class GetContributionSummaryAction
         $startDate = $startDate ?? now()->startOfMonth();
         $endDate = $endDate ?? now()->endOfMonth();
 
+        $totalCollected = $this->getTotalCollected($startDate, $endDate);
+        $totalMembers = $this->getTotalMembers();
+        $monthlyTarget = $this->getMonthlyTarget();
+        $collectionRate = $monthlyTarget > 0 ? ($totalCollected / $monthlyTarget) * 100 : 0;
+
         return [
-            'total_collected' => $this->getTotalCollected($startDate, $endDate),
+            'total_collected' => $totalCollected,
             'total_outstanding' => $this->getTotalOutstanding(),
+            'monthly_target' => $monthlyTarget,
+            'collection_rate' => $collectionRate,
+            'total_members' => $totalMembers,
             'by_category' => $this->getSummaryByCategory($startDate, $endDate),
             'recent_contributions' => $this->getRecentContributions(),
             'period' => [
@@ -78,5 +86,20 @@ class GetContributionSummaryAction
             ->latest('date')
             ->limit($limit)
             ->get();
+    }
+
+    private function getTotalMembers(): int
+    {
+        return User::whereHas('category')->count();
+    }
+
+    private function getMonthlyTarget(): float
+    {
+        return User::with('category')
+            ->whereHas('category')
+            ->get()
+            ->sum(function ($user) {
+                return $user->category->monthly_fee ?? 0;
+            });
     }
 }

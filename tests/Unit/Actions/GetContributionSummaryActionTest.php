@@ -16,10 +16,10 @@ class GetContributionSummaryActionTest extends TestCase
     use RefreshDatabase;
 
     protected GetContributionSummaryAction $action;
-    protected Category $marriedCategory;
-    protected Category $singleCategory;
-    protected User $marriedUser;
-    protected User $singleUser;
+    protected Category $employedCategory;
+    protected Category $unemployedCategory;
+    protected User $employedUser;
+    protected User $unemployedUser;
 
     protected function setUp(): void
     {
@@ -29,30 +29,30 @@ class GetContributionSummaryActionTest extends TestCase
         $this->action = new GetContributionSummaryAction($calculateBalanceAction);
 
         // Create categories
-        $this->marriedCategory = Category::create([
-            'name' => 'Married',
-            'slug' => 'married',
-            'monthly_fee' => 50.00,
-            'notes' => 'Married members',
+        $this->employedCategory = Category::create([
+            'name' => 'Employed',
+            'slug' => 'employed',
+            'monthly_fee' => 4000.00,
+            'notes' => 'Employed members',
             'is_active' => true,
         ]);
 
-        $this->singleCategory = Category::create([
-            'name' => 'Single',
-            'slug' => 'single',
-            'monthly_fee' => 30.00,
-            'notes' => 'Single members',
+        $this->unemployedCategory = Category::create([
+            'name' => 'Unemployed',
+            'slug' => 'unemployed',
+            'monthly_fee' => 2000.00,
+            'notes' => 'Unemployed members',
             'is_active' => true,
         ]);
 
         // Create users
-        $this->marriedUser = User::factory()->create([
-            'category_id' => $this->marriedCategory->id,
+        $this->employedUser = User::factory()->create([
+            'category_id' => $this->employedCategory->id,
             'created_at' => now()->subMonths(2), // Created 2 months ago
         ]);
 
-        $this->singleUser = User::factory()->create([
-            'category_id' => $this->singleCategory->id,
+        $this->unemployedUser = User::factory()->create([
+            'category_id' => $this->unemployedCategory->id,
             'created_at' => now()->subMonths(2), // Created 2 months ago
         ]);
     }
@@ -61,22 +61,22 @@ class GetContributionSummaryActionTest extends TestCase
     {
         // Create contributions for current month
         Contribution::create([
-            'user_id' => $this->marriedUser->id,
-            'amount' => 50.00,
+            'user_id' => $this->employedUser->id,
+            'amount' => 4000.00,
             'date' => now()->startOfMonth()->addDays(5),
-            'recorded_by_id' => $this->marriedUser->id,
+            'recorded_by_id' => $this->employedUser->id,
         ]);
 
         Contribution::create([
-            'user_id' => $this->singleUser->id,
-            'amount' => 30.00,
+            'user_id' => $this->unemployedUser->id,
+            'amount' => 2000.00,
             'date' => now()->startOfMonth()->addDays(10),
-            'recorded_by_id' => $this->singleUser->id,
+            'recorded_by_id' => $this->unemployedUser->id,
         ]);
 
         $summary = $this->action->execute();
 
-        $this->assertEquals(80.00, $summary['total_collected']);
+        $this->assertEquals(6000.00, $summary['total_collected']); // 4000 + 2000
         $this->assertGreaterThan(0, $summary['total_outstanding']);
         $this->assertCount(2, $summary['by_category']);
         $this->assertInstanceOf(\Illuminate\Support\Collection::class, $summary['recent_contributions']);
@@ -91,23 +91,23 @@ class GetContributionSummaryActionTest extends TestCase
 
         // Create contributions within date range
         Contribution::create([
-            'user_id' => $this->marriedUser->id,
-            'amount' => 50.00,
+            'user_id' => $this->employedUser->id,
+            'amount' => 4000.00,
             'date' => Carbon::parse('2024-01-15'),
-            'recorded_by_id' => $this->marriedUser->id,
+            'recorded_by_id' => $this->employedUser->id,
         ]);
 
         // Create contribution outside date range
         Contribution::create([
-            'user_id' => $this->singleUser->id,
-            'amount' => 30.00,
+            'user_id' => $this->unemployedUser->id,
+            'amount' => 2000.00,
             'date' => Carbon::parse('2024-02-15'),
-            'recorded_by_id' => $this->singleUser->id,
+            'recorded_by_id' => $this->unemployedUser->id,
         ]);
 
         $summary = $this->action->execute($startDate, $endDate);
 
-        $this->assertEquals(50.00, $summary['total_collected']); // Only January contribution
+        $this->assertEquals(4000.00, $summary['total_collected']); // Only January contribution
         $this->assertEquals('2024-01-01', $summary['period']['start']);
         $this->assertEquals('2024-01-31', $summary['period']['end']);
     }

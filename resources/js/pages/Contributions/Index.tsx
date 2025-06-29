@@ -32,7 +32,7 @@ export default function Index({ auth, balance, contributions }: IndexProps) {
                             {/* Balance Overview */}
                             <div className="mb-6">
                                 <h3 className="text-lg font-medium mb-4">Account Overview</h3>
-                                <BalanceCard balance={balance} user={auth.user} />
+                                <BalanceCard balance={balance} user={auth.user!} />
                             </div>
 
                             {/* Contributions History */}
@@ -66,7 +66,7 @@ export default function Index({ auth, balance, contributions }: IndexProps) {
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <h4 className="font-medium text-blue-900 mb-2">Information</h4>
                                 <ul className="text-sm text-blue-800 space-y-1">
-                                    <li>• Your monthly contribution amount is based on your category: {auth.user.category?.name}</li>
+                                    <li>• Your monthly contribution amount is based on your category: {auth.user?.category?.name}</li>
                                     <li>• Contact the financial secretary if you have questions about your contributions</li>
                                     <li>• Your balance is calculated from the start of your membership</li>
                                 </ul>

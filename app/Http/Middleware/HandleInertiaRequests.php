@@ -46,8 +46,16 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
-                'roles' => $request->user()?->load('roles')->roles->pluck('name') ?? [],
-                'permissions' => $request->user()?->load('permissions')->getAllPermissions()->pluck('name') ?? [],
+                'permissions' => [
+                    'contributions' => [
+                        'viewAll' => $request->user()?->can('view-all-contributions') ?? false,
+                        'create' => $request->user()?->can('create-contributions') ?? false,
+                        'delete' => $request->user()?->can('delete-contributions') ?? false,
+                    ],
+                    'admin' => [
+                        'access' => $request->user()?->hasAnyRole(['financial-secretary', 'super-admin']) ?? false,
+                    ],
+                ],
             ],
             'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),

@@ -19,15 +19,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create categories first, then users
-        $marriedCategory = \App\Models\Category::where('slug', 'married')->first();
-        $singleCategory = \App\Models\Category::where('slug', 'single')->first();
+        $employedCategory = \App\Models\Category::where('slug', 'employed')->first();
+        $unemployedCategory = \App\Models\Category::where('slug', 'unemployed')->first();
         $studentCategory = \App\Models\Category::where('slug', 'student')->first();
 
         // Create test financial secretary
         $financialSecretary = User::factory()->create([
             'name' => 'Financial Secretary',
             'email' => 'secretary@family.com',
-            'category_id' => $marriedCategory->id,
+            'category_id' => $employedCategory->id,
         ]);
         $financialSecretary->assignRole('financial-secretary');
 
@@ -35,14 +35,14 @@ class DatabaseSeeder extends Seeder
         $contributor1 = User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@family.com',
-            'category_id' => $marriedCategory->id,
+            'category_id' => $employedCategory->id,
         ]);
         $contributor1->assignRole('contributor');
 
         $contributor2 = User::factory()->create([
             'name' => 'Jane Smith',
             'email' => 'jane@family.com',
-            'category_id' => $singleCategory->id,
+            'category_id' => $unemployedCategory->id,
         ]);
         $contributor2->assignRole('contributor');
 
@@ -52,5 +52,12 @@ class DatabaseSeeder extends Seeder
             'category_id' => $studentCategory->id,
         ]);
         $contributor3->assignRole('contributor');
+
+        $contributor4 = User::factory()->create([
+            'name' => 'Aminu Hussain',
+            'email' => 'aminu.hussain@admin.com',
+            'category_id' => $employedCategory->id,
+        ]);
+        $contributor4->assignRole('super-admin');
     }
 }

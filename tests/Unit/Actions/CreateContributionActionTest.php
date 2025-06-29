@@ -27,7 +27,7 @@ class CreateContributionActionTest extends TestCase
         $category = Category::create([
             'name' => 'Test Category',
             'slug' => 'test',
-            'monthly_fee' => 25.00,
+            'monthly_fee' => 10000.00,
             'notes' => 'Test category',
             'is_active' => true,
         ]);
@@ -40,7 +40,7 @@ class CreateContributionActionTest extends TestCase
     {
         $data = [
             'user_id' => $this->user->id,
-            'amount' => 50.00,
+            'amount' => 4000.00,
             'date' => '2024-01-15',
             'recorded_by_id' => $this->recorder->id,
             'notes' => 'Test contribution',
@@ -50,14 +50,14 @@ class CreateContributionActionTest extends TestCase
 
         $this->assertInstanceOf(Contribution::class, $contribution);
         $this->assertEquals($this->user->id, $contribution->user_id);
-        $this->assertEquals(50.00, $contribution->amount);
+        $this->assertEquals(4000.00, $contribution->amount);
         $this->assertEquals('2024-01-15', $contribution->date->format('Y-m-d'));
         $this->assertEquals($this->recorder->id, $contribution->recorded_by_id);
         $this->assertEquals('Test contribution', $contribution->notes);
 
         $this->assertDatabaseHas('contributions', [
             'user_id' => $this->user->id,
-            'amount' => 50.00,
+            'amount' => 4000.00,
             'recorded_by_id' => $this->recorder->id,
         ]);
     }
