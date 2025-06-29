@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge';
 import { ContributionList } from '@/components/contributions/ContributionList';
-import { formatCurrency } from '@/lib/utils';
+// import { formatCurrency } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { Plus, ArrowRight, Activity } from 'lucide-react';
 import { Contribution } from '@/types/contribution';
 
 interface RecentActivityProps {
-    contributions: Contribution[] | any[];
+    contributions: Contribution[];
     showCreateButton?: boolean;
     title?: string;
     emptyMessage?: string;

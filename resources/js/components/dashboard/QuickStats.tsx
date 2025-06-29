@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
-import { Users, DollarSign, TrendingUp, AlertTriangle } from 'lucide-react';
+import { User } from '@/types';
+import {DollarSign, TrendingUp, AlertTriangle } from 'lucide-react';
 
 interface QuickStatsProps {
     summary: {
@@ -15,7 +16,7 @@ interface QuickStatsProps {
             monthly_fee: number;
         }>;
     };
-    membersWithoutContribution: any[];
+    membersWithoutContribution: User[];
     currentMonth: string;
 }
 

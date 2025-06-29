@@ -7,7 +7,7 @@ import { AlertTriangle, Users, Mail, Plus } from 'lucide-react';
 import { User } from '@/types';
 
 interface MembersBehindAlertProps {
-    members: User[] | any[];
+    members: User[];
     currentMonth: string;
 }
 
