@@ -41,10 +41,10 @@ class ContributionControllerTest extends TestCase
 
         // Create category
         $this->category = Category::create([
-            'name' => 'Married',
-            'slug' => 'married',
-            'monthly_fee' => 50.00,
-            'notes' => 'Married members',
+            'name' => 'Employed',
+            'slug' => 'employed',
+            'monthly_fee' => 4000.00,
+            'notes' => 'Employed members',
             'is_active' => true,
         ]);
 

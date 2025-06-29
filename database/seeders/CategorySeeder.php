@@ -15,24 +15,24 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Married',
-                'slug' => 'married',
-                'monthly_fee' => 20000.00, // ₦20,000
-                'description' => 'For married family members - higher contribution due to dual income potential',
+                'name' => 'Employed',
+                'slug' => 'employed',
+                'monthly_fee' => 4000.00, // ₦4,000
+                'description' => 'For employed family members',
                 'is_active' => true,
             ],
             [
-                'name' => 'Single',
-                'slug' => 'single',
-                'monthly_fee' => 12000.00, // ₦12,000
-                'description' => 'For single family members - moderate contribution amount',
+                'name' => 'Unemployed',
+                'slug' => 'unemployed',
+                'monthly_fee' => 2000.00, // ₦2,000
+                'description' => 'For unemployed family members - reduced contribution',
                 'is_active' => true,
             ],
             [
                 'name' => 'Student',
                 'slug' => 'student',
-                'monthly_fee' => 6000.00, // ₦6,000
-                'description' => 'For student family members - reduced contribution due to limited income',
+                'monthly_fee' => 1000.00, // ₦1,000
+                'description' => 'For student family members - minimal contribution due to limited income',
                 'is_active' => true,
             ],
         ];
