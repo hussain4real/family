@@ -52,5 +52,12 @@ class DatabaseSeeder extends Seeder
             'category_id' => $studentCategory->id,
         ]);
         $contributor3->assignRole('contributor');
+
+        $contributor4 = User::factory()->create([
+            'name' => 'Aminu Hussain',
+            'email' => 'aminu.hussain@admin.com',
+            'category_id' => $employedCategory->id,
+        ]);
+        $contributor4->assignRole('super-admin');
     }
 }

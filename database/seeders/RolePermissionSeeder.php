@@ -44,5 +44,7 @@ class RolePermissionSeeder extends Seeder
             'delete-contributions',
             'view-contribution-reports',
         ]);
+        $superAdminRole = Role::updateOrCreate(['name' => 'super-admin']);
+        $superAdminRole->givePermissionTo(Permission::all());
     }
 }
