@@ -55,7 +55,7 @@ export default function Dashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
 
-            <div className="space-y-6">
+            <div className="space-y-6 px-0 md:px-6 lg:px-8 py-0 md:py-6 lg:py-8">
                 {/* Welcome Header */}
                 <div className="flex items-center justify-between">
                     <div>
