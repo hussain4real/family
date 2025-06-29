@@ -45,6 +45,9 @@ export interface UserBalance {
 export interface ContributionSummary {
     total_collected: number;
     total_outstanding: number;
+    monthly_target: number;
+    collection_rate: number;
+    total_members: number;
     by_category: CategorySummary[];
     recent_contributions: Contribution[];
     period: {
