@@ -1,115 +1,36 @@
 import { Auth, User } from '@/types';
 
 /**
- * Check if a user has a specific permission
- * Can accept either User object with permissions or Auth object
+ * Check if a user can view all contributions
  */
-export function hasPermission(userOrAuth: User | Auth | null | undefined, permission: string): boolean {
-    if (!userOrAuth) {
-        return false;
-    }
-
-    // Check if it's an Auth object (has permissions array directly)
-    if ('permissions' in userOrAuth && Array.isArray(userOrAuth.permissions)) {
-        return userOrAuth.permissions.includes(permission);
-    }
-
-    // Check if it's a User object with permissions array
-    if ('permissions' in userOrAuth && userOrAuth.permissions) {
-        return userOrAuth.permissions.includes(permission);
-    }
-
-    return false;
+export function canViewAllContributions(auth: Auth): boolean {
+    return auth?.permissions?.contributions?.viewAll ?? false;
 }
 
 /**
- * Check if a user has any of the specified permissions
+ * Check if a user can create contributions
  */
-export function hasAnyPermission(userOrAuth: User | Auth | null | undefined, permissions: string[]): boolean {
-    if (!userOrAuth) {
-        return false;
-    }
-
-    // Check if it's an Auth object
-    if ('permissions' in userOrAuth && Array.isArray(userOrAuth.permissions)) {
-        return permissions.some(permission => (userOrAuth as Auth).permissions.includes(permission));
-    }
-
-    // Check if it's a User object with permissions
-    if ('permissions' in userOrAuth && userOrAuth.permissions) {
-        return permissions.some(permission => userOrAuth.permissions!.includes(permission));
-    }
-
-    return false;
+export function canCreateContributions(auth: Auth): boolean {
+    return auth?.permissions?.contributions?.create ?? false;
 }
 
 /**
- * Check if a user has all of the specified permissions
+ * Check if a user can delete contributions
  */
-export function hasAllPermissions(userOrAuth: User | Auth | null | undefined, permissions: string[]): boolean {
-    if (!userOrAuth) {
-        return false;
-    }
-
-    // Check if it's an Auth object
-    if ('permissions' in userOrAuth && Array.isArray(userOrAuth.permissions)) {
-        return permissions.every(permission => (userOrAuth as Auth).permissions.includes(permission));
-    }
-
-    // Check if it's a User object with permissions
-    if ('permissions' in userOrAuth && userOrAuth.permissions) {
-        return permissions.every(permission => userOrAuth.permissions!.includes(permission));
-    }
-
-    return false;
+export function canDeleteContributions(auth: Auth): boolean {
+    return auth?.permissions?.contributions?.delete ?? false;
 }
 
 /**
- * Check if a user has a specific role
+ * Check if a user can access admin features
  */
-export function hasRole(userOrAuth: User | Auth | null | undefined, role: string): boolean {
-    if (!userOrAuth) {
-        return false;
-    }
-
-    // Check if it's an Auth object
-    if ('roles' in userOrAuth && Array.isArray(userOrAuth.roles)) {
-        return userOrAuth.roles.includes(role);
-    }
-
-    // Check if it's a User object with roles
-    if ('roles' in userOrAuth && userOrAuth.roles) {
-        return userOrAuth.roles.includes(role);
-    }
-
-    return false;
+export function canAccessAdmin(auth: Auth): boolean {
+    return auth?.permissions?.admin?.access ?? false;
 }
 
 /**
- * Check if a user has any of the specified roles
+ * Check if a user can view own contributions (all authenticated users can)
  */
-export function hasAnyRole(userOrAuth: User | Auth | null | undefined, roles: string[]): boolean {
-    if (!userOrAuth) {
-        return false;
-    }
-
-    // Check if it's an Auth object
-    if ('roles' in userOrAuth && Array.isArray(userOrAuth.roles)) {
-        return roles.some(role => (userOrAuth as Auth).roles.includes(role));
-    }
-
-    // Check if it's a User object with roles
-    if ('roles' in userOrAuth && userOrAuth.roles) {
-        return roles.some(role => userOrAuth.roles!.includes(role));
-    }
-
-    return false;
-}
-
-/**
- * Check if a user can access admin features (financial secretary role or admin permissions)
- */
-export function canAccessAdmin(userOrAuth: User | Auth | null | undefined): boolean {
-    return hasRole(userOrAuth, 'financial-secretary') ||
-        hasPermission(userOrAuth, 'view-all-contributions');
+export function canViewOwnContributions(auth: Auth): boolean {
+    return auth?.user !== null;
 }
