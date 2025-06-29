@@ -17,9 +17,9 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $categories = [
-            ['name' => 'Married', 'slug' => 'married', 'fee' => 50.00, 'description' => 'For married family members'],
-            ['name' => 'Single', 'slug' => 'single', 'fee' => 30.00, 'description' => 'For single family members'],
-            ['name' => 'Student', 'slug' => 'student', 'fee' => 15.00, 'description' => 'For student family members'],
+            ['name' => 'Married', 'slug' => 'married', 'fee' => 20000.00, 'description' => 'For married family members'],
+            ['name' => 'Single', 'slug' => 'single', 'fee' => 12000.00, 'description' => 'For single family members'],
+            ['name' => 'Student', 'slug' => 'student', 'fee' => 6000.00, 'description' => 'For student family members'],
         ];
 
         $category = fake()->randomElement($categories);

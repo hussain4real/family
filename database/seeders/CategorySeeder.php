@@ -17,21 +17,21 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Married',
                 'slug' => 'married',
-                'monthly_fee' => 50.00,
+                'monthly_fee' => 20000.00, // ₦20,000
                 'description' => 'For married family members - higher contribution due to dual income potential',
                 'is_active' => true,
             ],
             [
                 'name' => 'Single',
                 'slug' => 'single',
-                'monthly_fee' => 30.00,
+                'monthly_fee' => 12000.00, // ₦12,000
                 'description' => 'For single family members - moderate contribution amount',
                 'is_active' => true,
             ],
             [
                 'name' => 'Student',
                 'slug' => 'student',
-                'monthly_fee' => 15.00,
+                'monthly_fee' => 6000.00, // ₦6,000
                 'description' => 'For student family members - reduced contribution due to limited income',
                 'is_active' => true,
             ],
