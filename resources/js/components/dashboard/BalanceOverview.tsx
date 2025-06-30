@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { formatCurrency } from '@/lib/utils';
-import { DollarSign, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, AlertTriangle, HandCoins, Currency } from 'lucide-react';
 
 interface BalanceOverviewProps {
     balance: {
@@ -46,7 +46,7 @@ export function BalanceOverview({ balance, category }: BalanceOverviewProps) {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Contribution Status</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <Currency className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
