@@ -52,7 +52,7 @@ export default function Admin({ summary, recentContributions, users, categories 
                                             Record Contribution
                                         </Button>
                                     </Link>
-                                    <Link href={route('contributions.show')}>
+                                    <Link href={route('contributions.index')}>
                                         <Button variant="outline" className="flex items-center gap-2">
                                             <DollarSign className="h-4 w-4" />
                                             My Contributions
