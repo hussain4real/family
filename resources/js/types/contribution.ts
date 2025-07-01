@@ -47,6 +47,7 @@ export interface UserBalance {
 export interface ContributionSummary {
     total_collected: number;
     total_outstanding: number;
+    total_all_time_collected: number;
     monthly_target: number;
     collection_rate: number;
     total_members: number;

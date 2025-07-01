@@ -7,6 +7,7 @@ interface QuickStatsProps {
     summary: {
         total_collected: number;
         total_outstanding: number;
+        total_all_time_collected: number;
         monthly_target: number;
         collection_rate: number;
         total_members: number;
@@ -30,15 +31,6 @@ export function QuickStats({ summary, membersWithoutContribution, currentMonth }
     const collectionPercentage = summary.monthly_target > 0
         ? (summary.total_collected / summary.monthly_target) * 100
         : 0;
-
-    // Calculate overall statistics
-    const overallExpected = summary.by_category.reduce((total, category) => {
-        return total + (category.total_members * category.monthly_fee);
-    }, 0);
-
-    const overallCollected = summary.by_category.reduce((total, category) => {
-        return total + category.total_collected;
-    }, 0);
 
     return (
         <div className="space-y-6">
@@ -141,7 +133,7 @@ export function QuickStats({ summary, membersWithoutContribution, currentMonth }
                             <Banknote className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{formatCurrency(overallCollected)}</div>
+                            <div className="text-2xl font-bold">{formatCurrency(summary.total_all_time_collected)}</div>
                             <p className="text-xs text-muted-foreground">
                                 Total contributions ever
                             </p>
