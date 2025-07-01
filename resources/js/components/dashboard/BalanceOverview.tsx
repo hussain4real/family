@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { formatCurrency } from '@/lib/utils';
-import { DollarSign, TrendingUp, TrendingDown, AlertTriangle, HandCoins, Currency } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertTriangle, Currency } from 'lucide-react';
 
 interface BalanceOverviewProps {
     balance: {
@@ -25,14 +25,16 @@ export function BalanceOverview({ balance, category }: BalanceOverviewProps) {
 
     const getStatusColor = () => {
         if (balance.is_up_to_date) return 'text-green-600 dark:text-green-400';
-        if (balance.months_behind <= 1) return 'text-yellow-600 dark:text-yellow-400';
-        return 'text-red-600 dark:text-red-400';
+        if (balance.months_behind === 1) return 'text-yellow-600 dark:text-yellow-400';
+        if (balance.months_behind > 1) return 'text-red-600 dark:text-red-400';
+        return 'text-green-600 dark:text-green-400'; // fallback for 0 or undefined months_behind
     };
 
     const getStatusIcon = () => {
         if (balance.is_up_to_date) return <TrendingUp className="h-4 w-4" />;
-        if (balance.months_behind <= 1) return <AlertTriangle className="h-4 w-4" />;
-        return <TrendingDown className="h-4 w-4" />;
+        if (balance.months_behind === 1) return <AlertTriangle className="h-4 w-4" />;
+        if (balance.months_behind > 1) return <TrendingDown className="h-4 w-4" />;
+        return <TrendingUp className="h-4 w-4" />; // fallback for 0 or undefined months_behind
     };
 
     const getStatusText = () => {

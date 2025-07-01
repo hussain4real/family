@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ContributionSummary } from '@/types/contribution';
 import { formatCurrency } from '@/lib/utils';
-import { DollarSign, Users, AlertTriangle, TrendingUp, HandCoins } from 'lucide-react';
+import { Users, AlertTriangle, TrendingUp, HandCoins } from 'lucide-react';
 
 interface SummaryCardsProps {
     summary: ContributionSummary;

@@ -7,7 +7,7 @@ import { ContributionList } from '@/components/contributions/ContributionList';
 
 interface IndexProps extends PageProps {
     balance: UserBalance;
-    contributions: Contribution[] | any[];
+    contributions: Contribution[];
 }
 
 export default function Index({ auth, balance, contributions }: IndexProps) {

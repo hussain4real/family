@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { User } from '@/types';
-import {DollarSign, TrendingUp, AlertTriangle, Banknote } from 'lucide-react';
+import { TrendingUp, AlertTriangle, Banknote } from 'lucide-react';
 
 interface QuickStatsProps {
     summary: {
