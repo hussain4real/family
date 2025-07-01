@@ -18,6 +18,8 @@ class CalculateUserBalanceAction
                 'total_expected' => 0,
                 'total_paid' => 0,
                 'outstanding_balance' => 0,
+                'months_behind' => 0,
+                'is_up_to_date' => true,
                 'status' => 'no_category',
             ];
         }
@@ -29,6 +31,8 @@ class CalculateUserBalanceAction
             ->sum('amount');
 
         $outstandingBalance = max(0, $totalExpected - $totalPaid);
+        $monthsBehind = $outstandingBalance > 0 ? ceil($outstandingBalance / $user->category->monthly_fee) : 0;
+        $isUpToDate = $outstandingBalance == 0;
 
         return [
             'monthly_fee' => $user->category->monthly_fee,
@@ -36,6 +40,8 @@ class CalculateUserBalanceAction
             'total_expected' => $totalExpected,
             'total_paid' => $totalPaid,
             'outstanding_balance' => $outstandingBalance,
+            'months_behind' => $monthsBehind,
+            'is_up_to_date' => $isUpToDate,
             'status' => $this->getPaymentStatus($outstandingBalance, $user->category->monthly_fee),
             'as_of_date' => $asOfDate->format('Y-m-d'),
         ];
@@ -44,14 +50,19 @@ class CalculateUserBalanceAction
     private function calculateMonthsDue(User $user, Carbon $asOfDate): int
     {
         // Calculate months from user creation or a specific start date
-        $startDate = $user->created_at;
+        $startDate = $user->created_at->startOfMonth(); // Start from beginning of creation month
 
         // If the user was created in the future relative to asOfDate, return 0
         if ($startDate->isAfter($asOfDate)) {
             return 0;
         }
 
-        return $startDate->diffInMonths($asOfDate) + 1;
+        // Calculate months between start and as-of date (inclusive)
+        // This includes the current month if we're in it
+        $endOfCurrentMonth = $asOfDate->copy()->endOfMonth();
+        $monthsDue = $startDate->diffInMonths($endOfCurrentMonth) + 1;
+
+        return $monthsDue;
     }
 
     private function getPaymentStatus(float $outstandingBalance, float $monthlyFee): string

@@ -38,6 +38,8 @@ export interface UserBalance {
     total_expected: number;
     total_paid: number;
     outstanding_balance: number;
+    months_behind: number;
+    is_up_to_date: boolean;
     status: 'up_to_date' | 'behind_one_month' | 'significantly_behind' | 'no_category';
     as_of_date: string;
 }
