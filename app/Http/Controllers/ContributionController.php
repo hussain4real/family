@@ -41,7 +41,7 @@ class ContributionController extends Controller
         $balance = $this->calculateBalance->execute($user);
 
         return Inertia::render('Contributions/Index', [
-            'contributions' => ContributionResource::collection($contributions),
+            'contributions' => ContributionResource::collection($contributions)->resolve(),
             'balance' => $balance,
             'user' => new UserResource($user),
         ]);
@@ -83,10 +83,10 @@ class ContributionController extends Controller
             ->get();
 
         return Inertia::render('Contributions/Admin', [
-            'contributions' => ContributionResource::collection($contributions),
+            'contributions' => ContributionResource::collection($contributions)->resolve(),
             'summary' => $summary,
-            'recentContributions' => ContributionResource::collection($recentContributions),
-            'users' => UserResource::collection($users),
+            'recentContributions' => ContributionResource::collection($recentContributions)->resolve(),
+            'users' => UserResource::collection($users)->resolve(),
             'categories' => $categories,
             'filters' => $request->only(['category_id', 'user_id']),
         ]);
@@ -106,7 +106,7 @@ class ContributionController extends Controller
             ->get();
 
         return Inertia::render('Contributions/Create', [
-            'users' => UserResource::collection($users),
+            'users' => UserResource::collection($users)->resolve(),
             'categories' => $categories,
         ]);
     }

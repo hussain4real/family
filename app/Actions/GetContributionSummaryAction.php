@@ -27,6 +27,7 @@ class GetContributionSummaryAction
         return [
             'total_collected' => $totalCollected,
             'total_outstanding' => $this->getTotalOutstanding(),
+            'total_all_time_collected' => $this->getTotalAllTimeCollected(),
             'monthly_target' => $monthlyTarget,
             'collection_rate' => $collectionRate,
             'total_members' => $totalMembers,
@@ -54,6 +55,11 @@ class GetContributionSummaryAction
                 $balance = $this->calculateBalance->execute($user);
                 return $balance['outstanding_balance'];
             });
+    }
+
+    private function getTotalAllTimeCollected(): float
+    {
+        return Contribution::sum('amount');
     }
 
     private function getSummaryByCategory(Carbon $startDate, Carbon $endDate): Collection

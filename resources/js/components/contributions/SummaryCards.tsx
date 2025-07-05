@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ContributionSummary } from '@/types/contribution';
 import { formatCurrency } from '@/lib/utils';
-import { DollarSign, Users, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Users, AlertTriangle, TrendingUp, HandCoins } from 'lucide-react';
 
 interface SummaryCardsProps {
     summary: ContributionSummary;
@@ -16,7 +16,7 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
                     <CardTitle className="text-sm font-medium">
                         Total Collected
                     </CardTitle>
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    <HandCoins className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-green-600">

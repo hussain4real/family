@@ -38,6 +38,8 @@ export interface UserBalance {
     total_expected: number;
     total_paid: number;
     outstanding_balance: number;
+    months_behind: number;
+    is_up_to_date: boolean;
     status: 'up_to_date' | 'behind_one_month' | 'significantly_behind' | 'no_category';
     as_of_date: string;
 }
@@ -45,6 +47,7 @@ export interface UserBalance {
 export interface ContributionSummary {
     total_collected: number;
     total_outstanding: number;
+    total_all_time_collected: number;
     monthly_target: number;
     collection_rate: number;
     total_members: number;

@@ -11,6 +11,9 @@ interface IndexProps extends PageProps {
 }
 
 export default function Index({ auth, balance, contributions }: IndexProps) {
+    // Ensure contributions is an array
+    const contributionsList = Array.isArray(contributions) ? contributions : [];
+
     return (
         <AppLayout>
             <Head title="My Contributions" />
@@ -39,16 +42,16 @@ export default function Index({ auth, balance, contributions }: IndexProps) {
                             <div>
                                 <div className="flex items-center justify-between mb-4">
                                     <h3 className="text-lg font-medium">Contribution History</h3>
-                                    {contributions.length > 0 && (
+                                    {contributionsList.length > 0 && (
                                         <p className="text-sm text-gray-600">
-                                            {contributions.length} contribution{contributions.length !== 1 ? 's' : ''} recorded
+                                            {contributionsList.length} contribution{contributionsList.length !== 1 ? 's' : ''} recorded
                                         </p>
                                     )}
                                 </div>
 
-                                {contributions.length > 0 ? (
+                                {contributionsList.length > 0 ? (
                                     <ContributionList
-                                        contributions={contributions}
+                                        contributions={contributionsList}
                                         showRecorder={false}
                                         showActions={false}
                                     />

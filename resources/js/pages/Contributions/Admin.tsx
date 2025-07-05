@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from '@inertiajs/react';
-import { Plus, Users, DollarSign } from 'lucide-react';
+import { Plus, Users, Banknote } from 'lucide-react';
 
 interface ResourceCollection<T> {
     data: T[];
@@ -54,8 +54,8 @@ export default function Admin({ summary, recentContributions, users, categories 
                                     </Link>
                                     <Link href={route('contributions.index')}>
                                         <Button variant="outline" className="flex items-center gap-2">
-                                            <DollarSign className="h-4 w-4" />
-                                            All Contributions
+                                            <Banknote className="h-4 w-4" />
+                                            My Contributions
                                         </Button>
                                     </Link>
                                 </div>
