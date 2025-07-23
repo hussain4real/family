@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import React from 'react';
+import { Head, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { ContributionSummary, Contribution, User, Category } from '@/types/contribution';
 import AppLayout from '@/layouts/app-layout';
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from '@inertiajs/react';
 import { Plus, Users, Banknote } from 'lucide-react';
+import { FlashAlert } from '@/components/ui/alert';
 
 interface ResourceCollection<T> {
     data: T[];
@@ -27,8 +29,28 @@ export default function Admin({ summary, recentContributions, users, categories 
     const usersData: User[] = Array.isArray(users) ? users : (users as ResourceCollection<User>)?.data || [];
     const categoriesData = categories || [];
 
+    // Extract flash data
+    const { flash } = usePage().props as { flash?: {
+        status: 'success' | 'error',
+        message: string,
+        member?: string,
+        amount?: number,
+        date?: string
+    }};
+
     return (
         <AppLayout>
+            {/* Conditionally render FlashAlert if flash data exists */}
+            {flash && (
+                <FlashAlert 
+                    status={flash.status}
+                    message={flash.message}
+                    details={flash.member && flash.amount && flash.date ? 
+                        <span>{flash.member} – ${flash.amount} on {flash.date}</span> : 
+                        undefined
+                    }
+                />
+            )}
             <Head title="Financial Administration" />
 
             <div className="py-12">

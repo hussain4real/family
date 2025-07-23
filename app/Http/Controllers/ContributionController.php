@@ -115,14 +115,42 @@ class ContributionController extends Controller
     {
         $this->authorize('create', Contribution::class);
 
-        $contribution = $this->createContribution->execute([
-            ...$request->validated(),
-            'recorded_by_id' => Auth::id(),
-        ]);
+        // Force exception for testing if test_error parameter is passed
+        if ($request->has('test_error')) {
+            return redirect()
+                ->route('contributions.admin')
+                ->with('flash', [
+                    'status' => 'error',
+                    'message' => 'This is a test error to verify the red alert functionality.'
+                ]);
+        }
 
-        return redirect()
-            ->route('contributions.admin')
-            ->with('success', 'Contribution recorded successfully.');
+        try {
+            $contribution = $this->createContribution->execute([
+                ...$request->validated(),
+                'recorded_by_id' => Auth::id(),
+            ]);
+
+            // Load the member relationship for flash data
+            $contribution->load('user');
+
+            return redirect()
+                ->route('contributions.admin')
+                ->with('flash', [
+                    'status' => 'success',
+                    'member' => $contribution->user->name,
+                    'amount' => $contribution->amount,
+                    'date' => $contribution->date->format('Y-m-d'),
+                    'message' => 'Contribution recorded successfully.'
+                ]);
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('contributions.admin')
+                ->with('flash', [
+                    'status' => 'error',
+                    'message' => 'Failed to record contribution: ' . $e->getMessage()
+                ]);
+        }
     }
 
     public function show(Contribution $contribution)

@@ -121,7 +121,7 @@ class ContributionControllerTest extends TestCase
             ->post(route('contributions.store'), $contributionData);
 
         $response->assertRedirect(route('contributions.admin'));
-        $response->assertSessionHas('success');
+        $response->assertSessionHas('flash.status', 'success');
 
         $this->assertDatabaseHas('contributions', [
             'user_id' => $this->contributor->id,
@@ -188,5 +188,23 @@ class ContributionControllerTest extends TestCase
             ->post(route('contributions.store'), $contributionData);
 
         $response->assertSessionHasErrors(['date']);
+    }
+
+    public function test_flash_error_on_validation_failure()
+    {
+        $contributionData = [
+            'user_id' => $this->contributor->id,
+            'amount' => '',  // This should fail validation
+            'date' => now()->format('Y-m-d'),
+        ];
+
+        $response = $this->actingAs($this->financialSecretary)
+            ->post(route('contributions.store'), $contributionData);
+
+        $response->assertSessionHasErrors(['amount']);
+        $response->assertSessionHas('flash', [
+            'status' => 'error',
+            'message' => 'Please fix the validation errors and try again.',
+        ]);
     }
 }

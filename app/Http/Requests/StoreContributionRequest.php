@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
 class StoreContributionRequest extends FormRequest
@@ -33,5 +35,22 @@ class StoreContributionRequest extends FormRequest
             'date.required' => 'Please select the contribution date.',
             'date.before_or_equal' => 'The contribution date cannot be in the future.',
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $response = redirect()
+            ->back()
+            ->withInput()
+            ->withErrors($validator)
+            ->with('flash', [
+                'status' => 'error',
+                'message' => 'Please fix the validation errors and try again.'
+            ]);
+
+        throw new HttpResponseException($response);
     }
 }

@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { User, Category } from '@/types/contribution';
 import AppLayout from '@/layouts/app-layout';
@@ -6,6 +6,7 @@ import { CreateContributionForm } from '@/components/contributions/CreateContrib
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
+import { Alert } from '@/components/ui/alert';
 
 interface ResourceCollection<T> {
     data: T[];
@@ -16,6 +17,14 @@ interface CreateProps extends PageProps {
 }
 
 export default function Create({ users, categories }: CreateProps) {
+    // Extract flash data
+    const { flash } = usePage().props as { flash?: {
+        status: 'success' | 'error',
+        message: string,
+        member?: string,
+        amount?: number,
+        date?: string
+    }};
 
     // Extract the actual users array from the ResourceCollection
     const usersData: User[] = Array.isArray(users) ? users : (users as ResourceCollection<User>)?.data || [];
@@ -23,6 +32,17 @@ export default function Create({ users, categories }: CreateProps) {
 
     return (
         <AppLayout>
+            {/* Conditionally render Alert if flash data exists */}
+            {flash && (
+                <Alert 
+                    status={flash.status}
+                    message={flash.message}
+                    details={flash.member && flash.amount && flash.date ? 
+                        <span>{flash.member} – ${flash.amount} on {flash.date}</span> : 
+                        undefined
+                    }
+                />
+            )}
             <Head title="Record New Contribution" />
 
             <div className="py-12">
